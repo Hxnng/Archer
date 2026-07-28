@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+.venv/
+
+# secrets / env (never commit)
+*.env
+.env*
+*secret*
+*token*
+*_key*
+*.key
+
+# big artifacts (not in this research repo)
+*.pt
+*.bin
+*.safetensors
+models/
+data/
+baseline/
+*.parquet
+benchmarks/livecodebench/test.jsonl
+benchmarks/livecodebench/test.jsonl.incomplete
+
+# raw and verbose run outputs
+*.log
+outputs/
+
+# OS
+.DS_Store

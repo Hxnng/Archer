@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "paper_target": "Table 3: matched-state feedback intervention",
+  "runs": [
+    {
+      "id": "table3_mbpp_feedback_k11",
+      "module": "archer.feedback_experiment",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": [
+        "--refresh-radius", "11",
+        "--confidence-threshold", "0.9",
+        "--horizon", "5",
+        "--mbpp-eval-workers", "8"
+      ]
+    }
+  ]
+}

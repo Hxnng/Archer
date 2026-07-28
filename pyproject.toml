@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "archer-dlm"
+version = "0.1.0"
+description = "State-anchored prompt-prefix caching for revisable diffusion-LM decoding"
+readme = "README.md"
+requires-python = ">=3.10,<3.12"
+dependencies = [
+  "accelerate==0.34.2",
+  "datasets==3.6.0",
+  "huggingface-hub==0.32.3",
+  "numpy==1.26.4",
+  "safetensors==0.5.3",
+  "torch==2.1.2",
+  "tqdm==4.67.1",
+  "transformers==4.49.0",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3,<9",
+]
+
+[project.scripts]
+archer-reproduce = "archer.benchmark:main"
+archer-feedback-probe = "archer.feedback_experiment:main"
+archer-cache-validity = "archer.cache_validity_experiment:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

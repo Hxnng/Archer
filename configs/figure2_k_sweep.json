@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "paper_target": "Figure 2: refresh-radius sensitivity",
+  "runs": [
+    {
+      "id": "figure2_mbpp_saber",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "mbpp", "--variants", "saber", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_mbpp_k1",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "mbpp", "--variants", "archer", "--refresh-radius", "1", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_mbpp_k2",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "mbpp", "--variants", "archer", "--refresh-radius", "2", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_mbpp_k4",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "mbpp", "--variants", "archer", "--refresh-radius", "4", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_mbpp_k8",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "mbpp", "--variants", "archer", "--refresh-radius", "8", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_mbpp_k16",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "mbpp", "--variants", "archer", "--refresh-radius", "16", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_mbpp_k32",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "mbpp", "--variants", "archer", "--refresh-radius", "32", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_mbpp_kinfinity",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "mbpp", "--variants", "archer", "--refresh-radius", "257", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_livecodebench_saber",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "livecodebench", "--variants", "saber", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_livecodebench_k1",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "livecodebench", "--variants", "archer", "--refresh-radius", "1", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_livecodebench_k2",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "livecodebench", "--variants", "archer", "--refresh-radius", "2", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_livecodebench_k4",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "livecodebench", "--variants", "archer", "--refresh-radius", "4", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_livecodebench_k8",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "livecodebench", "--variants", "archer", "--refresh-radius", "8", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_livecodebench_k16",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "livecodebench", "--variants", "archer", "--refresh-radius", "16", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_livecodebench_k32",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "livecodebench", "--variants", "archer", "--refresh-radius", "32", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_livecodebench_kinfinity",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "livecodebench", "--variants", "archer", "--refresh-radius", "257", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_humaneval_saber",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "humaneval", "--variants", "saber", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_humaneval_k1",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "humaneval", "--variants", "archer", "--refresh-radius", "1", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_humaneval_k2",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "humaneval", "--variants", "archer", "--refresh-radius", "2", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_humaneval_k4",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "humaneval", "--variants", "archer", "--refresh-radius", "4", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_humaneval_k8",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "humaneval", "--variants", "archer", "--refresh-radius", "8", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_humaneval_k16",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "humaneval", "--variants", "archer", "--refresh-radius", "16", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_humaneval_k32",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "humaneval", "--variants", "archer", "--refresh-radius", "32", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    },
+    {
+      "id": "figure2_humaneval_kinfinity",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": ["--dataset", "humaneval", "--variants", "archer", "--refresh-radius", "257", "--gen-length", "256", "--block-length", "256", "--temperature", "0", "--n", "2", "--mu", "2"]
+    }
+  ]
+}

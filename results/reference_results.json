@@ -1,0 +1,49 @@
+{
+  "units": {
+    "quality": "percent",
+    "time": "seconds per problem",
+    "speedup": "times"
+  },
+  "table1": [
+    {"method": "LLaDA-Confidence", "mbpp": 43.56, "mbpp_et": 30.44, "mbpp_time": 14.31, "livecodebench": 8.75, "livecodebench_time": 28.98, "humaneval": 43.29, "humaneval_et": 35.37, "humaneval_time": 19.86, "overall_performance": 32.28, "overall_speedup": 1.00},
+    {"method": "Fast-dLLM + Cache", "mbpp": 44.50, "mbpp_et": 31.62, "mbpp_time": 11.85, "livecodebench": 7.75, "livecodebench_time": 12.75, "humaneval": 41.46, "humaneval_et": 36.59, "humaneval_time": 11.95, "overall_performance": 32.38, "overall_speedup": 1.71},
+    {"method": "Fast-dLLM + Parallel", "mbpp": 40.05, "mbpp_et": 29.27, "mbpp_time": 3.40, "livecodebench": 8.25, "livecodebench_time": 4.85, "humaneval": 41.46, "humaneval_et": 36.59, "humaneval_time": 4.60, "overall_performance": 31.12, "overall_speedup": 4.84},
+    {"method": "dKV-Cache-Decode", "mbpp": 45.67, "mbpp_et": 32.32, "mbpp_time": 12.62, "livecodebench": 10.00, "livecodebench_time": 17.66, "humaneval": 42.07, "humaneval_et": 35.98, "humaneval_time": 14.54, "overall_performance": 33.21, "overall_speedup": 1.38},
+    {"method": "dKV-Cache-Greedy", "mbpp": 23.19, "mbpp_et": 18.27, "mbpp_time": 12.36, "livecodebench": 2.00, "livecodebench_time": 21.25, "humaneval": 15.24, "humaneval_et": 14.63, "humaneval_time": 15.82, "overall_performance": 14.67, "overall_speedup": 1.26},
+    {"method": "dLLM-Cache", "mbpp": 44.03, "mbpp_et": 32.32, "mbpp_time": 9.28, "livecodebench": 10.00, "livecodebench_time": 11.53, "humaneval": 40.24, "humaneval_et": 34.15, "humaneval_time": 10.16, "overall_performance": 32.15, "overall_speedup": 2.00},
+    {"method": "Saber", "mbpp": 44.03, "mbpp_et": 31.38, "mbpp_time": 8.45, "livecodebench": 7.25, "livecodebench_time": 17.75, "humaneval": 44.51, "humaneval_et": 37.20, "humaneval_time": 12.13, "overall_performance": 32.87, "overall_speedup": 1.65},
+    {"method": "Archer", "mbpp": 44.50, "mbpp_et": 32.55, "mbpp_time": 6.20, "livecodebench": 10.00, "livecodebench_time": 9.81, "humaneval": 43.29, "humaneval_et": 37.80, "humaneval_time": 8.07, "overall_performance": 33.63, "overall_speedup": 2.57}
+  ],
+  "table2": [
+    {"dataset": "MBPP", "backbone": "LLaDA-8B", "method": "Saber", "base": 44.03, "et": 31.38, "time": 8.45},
+    {"dataset": "MBPP", "backbone": "LLaDA-8B", "method": "Archer", "base": 44.50, "et": 32.55, "time": 6.20},
+    {"dataset": "MBPP", "backbone": "Dream-7B", "method": "Saber", "base": 52.93, "et": 41.69, "time": 8.18},
+    {"dataset": "MBPP", "backbone": "Dream-7B", "method": "Archer", "base": 53.63, "et": 42.15, "time": 5.51},
+    {"dataset": "MBPP", "backbone": "DiffuCoder-7B", "method": "Saber", "base": 59.48, "et": 44.73, "time": 12.35},
+    {"dataset": "MBPP", "backbone": "DiffuCoder-7B", "method": "Archer", "base": 60.19, "et": 45.20, "time": 8.97},
+    {"dataset": "HumanEval", "backbone": "LLaDA-8B", "method": "Saber", "base": 44.51, "et": 37.20, "time": 12.13},
+    {"dataset": "HumanEval", "backbone": "LLaDA-8B", "method": "Archer", "base": 43.29, "et": 37.20, "time": 7.29},
+    {"dataset": "HumanEval", "backbone": "Dream-7B", "method": "Saber", "base": 29.88, "et": 28.05, "time": 10.40},
+    {"dataset": "HumanEval", "backbone": "Dream-7B", "method": "Archer", "base": 31.10, "et": 28.05, "time": 5.85},
+    {"dataset": "HumanEval", "backbone": "DiffuCoder-7B", "method": "Saber", "base": 57.32, "et": 51.83, "time": 15.57},
+    {"dataset": "HumanEval", "backbone": "DiffuCoder-7B", "method": "Archer", "base": 60.37, "et": 54.27, "time": 9.24}
+  ],
+  "table3_k11": {
+    "pairs": 427,
+    "fresh": {"base": 43.33, "et": 31.38, "revision_at_5": 99.53, "mean_revision_step": 1.028, "only_pass": 18},
+    "cached": {"base": 44.50, "et": 32.55, "revision_at_5": 99.53, "mean_revision_step": 1.056, "only_pass": 23}
+  },
+  "table4_k11": {
+    "probes": 5122,
+    "distance_buckets": [
+      {"distance": "0-2", "probes": 627, "action_disagreement": 12.76, "next_state_hamming": 0.31},
+      {"distance": "3-5", "probes": 1739, "action_disagreement": 43.93, "next_state_hamming": 1.10},
+      {"distance": "6-8", "probes": 1806, "action_disagreement": 52.38, "next_state_hamming": 1.36},
+      {"distance": "9-10", "probes": 950, "action_disagreement": 58.00, "next_state_hamming": 1.57}
+    ],
+    "partial_spearman": {
+      "anchor_distance": {"action_disagreement": 0.130, "next_state_hamming": 0.130},
+      "cache_age": {"action_disagreement": 0.049, "next_state_hamming": 0.051}
+    }
+  }
+}
