@@ -3,7 +3,7 @@
   "paper_target": "Table 2: cross-backbone comparison",
   "runs": [
     {
-      "id": "table2_llada_mbpp_k11",
+      "id": "table2_llada_mbpp_saber",
       "module": "archer.benchmark",
       "model": {
         "repository": "GSAI-ML/LLaDA-8B-Instruct",
@@ -11,14 +11,28 @@
         "path_env": "ARCHER_LLADA_MODEL_PATH"
       },
       "args": [
-        "--dataset", "mbpp", "--variants", "saber", "archer",
+        "--dataset", "mbpp", "--variants", "saber",
+        "--gen-length", "256", "--block-length", "256",
+        "--temperature", "0", "--n", "2", "--mu", "2"
+      ]
+    },
+    {
+      "id": "table2_llada_mbpp_archer",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": [
+        "--dataset", "mbpp", "--variants", "archer",
         "--refresh-radius", "11",
         "--gen-length", "256", "--block-length", "256",
         "--temperature", "0", "--n", "2", "--mu", "2"
       ]
     },
     {
-      "id": "table2_llada_humaneval_k15",
+      "id": "table2_llada_humaneval_saber",
       "module": "archer.benchmark",
       "model": {
         "repository": "GSAI-ML/LLaDA-8B-Instruct",
@@ -26,14 +40,28 @@
         "path_env": "ARCHER_LLADA_MODEL_PATH"
       },
       "args": [
-        "--dataset", "humaneval", "--variants", "saber", "archer",
+        "--dataset", "humaneval", "--variants", "saber",
+        "--gen-length", "256", "--block-length", "256",
+        "--temperature", "0", "--n", "2", "--mu", "2"
+      ]
+    },
+    {
+      "id": "table2_llada_humaneval_archer",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": [
+        "--dataset", "humaneval", "--variants", "archer",
         "--refresh-radius", "15",
         "--gen-length", "256", "--block-length", "256",
         "--temperature", "0", "--n", "2", "--mu", "2"
       ]
     },
     {
-      "id": "table2_dream_mbpp_k17",
+      "id": "table2_dream_mbpp_saber",
       "module": "archer.benchmark",
       "model": {
         "repository": "Dream-org/Dream-v0-Instruct-7B",
@@ -41,14 +69,30 @@
         "path_env": "ARCHER_DREAM_MODEL_PATH"
       },
       "args": [
-        "--dataset", "mbpp", "--variants", "saber", "archer",
+        "--dataset", "mbpp", "--variants", "saber",
+        "--skip-warmup", "--continue-on-error",
+        "--gen-length", "256", "--block-length", "256",
+        "--temperature", "0", "--n", "2", "--mu", "2"
+      ]
+    },
+    {
+      "id": "table2_dream_mbpp_archer",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "Dream-org/Dream-v0-Instruct-7B",
+        "revision": "05334cb9faaf763692dcf9d8737c642be2b2a6ae",
+        "path_env": "ARCHER_DREAM_MODEL_PATH"
+      },
+      "args": [
+        "--dataset", "mbpp", "--variants", "archer",
+        "--skip-warmup", "--continue-on-error",
         "--refresh-radius", "17",
         "--gen-length", "256", "--block-length", "256",
         "--temperature", "0", "--n", "2", "--mu", "2"
       ]
     },
     {
-      "id": "table2_dream_humaneval_k9",
+      "id": "table2_dream_humaneval_saber",
       "module": "archer.benchmark",
       "model": {
         "repository": "Dream-org/Dream-v0-Instruct-7B",
@@ -56,14 +100,30 @@
         "path_env": "ARCHER_DREAM_MODEL_PATH"
       },
       "args": [
-        "--dataset", "humaneval", "--variants", "saber", "archer",
+        "--dataset", "humaneval", "--variants", "saber",
+        "--skip-warmup", "--continue-on-error",
+        "--gen-length", "256", "--block-length", "256",
+        "--temperature", "0", "--n", "2", "--mu", "2"
+      ]
+    },
+    {
+      "id": "table2_dream_humaneval_archer",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "Dream-org/Dream-v0-Instruct-7B",
+        "revision": "05334cb9faaf763692dcf9d8737c642be2b2a6ae",
+        "path_env": "ARCHER_DREAM_MODEL_PATH"
+      },
+      "args": [
+        "--dataset", "humaneval", "--variants", "archer",
+        "--skip-warmup", "--continue-on-error",
         "--refresh-radius", "9",
         "--gen-length", "256", "--block-length", "256",
         "--temperature", "0", "--n", "2", "--mu", "2"
       ]
     },
     {
-      "id": "table2_diffucoder_mbpp_k8",
+      "id": "table2_diffucoder_mbpp_saber",
       "module": "archer.benchmark",
       "model": {
         "repository": "apple/DiffuCoder-7B-cpGRPO",
@@ -71,14 +131,30 @@
         "path_env": "ARCHER_DIFFUCODER_MODEL_PATH"
       },
       "args": [
-        "--dataset", "mbpp", "--variants", "saber", "archer",
+        "--dataset", "mbpp", "--variants", "saber",
+        "--skip-warmup", "--continue-on-error",
+        "--gen-length", "256", "--block-length", "256",
+        "--temperature", "0", "--n", "2", "--mu", "2"
+      ]
+    },
+    {
+      "id": "table2_diffucoder_mbpp_archer",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "apple/DiffuCoder-7B-cpGRPO",
+        "revision": "98bc42bfd871eeec92fd0a8439ab34f75b405204",
+        "path_env": "ARCHER_DIFFUCODER_MODEL_PATH"
+      },
+      "args": [
+        "--dataset", "mbpp", "--variants", "archer",
+        "--skip-warmup", "--continue-on-error",
         "--refresh-radius", "8",
         "--gen-length", "256", "--block-length", "256",
         "--temperature", "0", "--n", "2", "--mu", "2"
       ]
     },
     {
-      "id": "table2_diffucoder_humaneval_k15",
+      "id": "table2_diffucoder_humaneval_saber",
       "module": "archer.benchmark",
       "model": {
         "repository": "apple/DiffuCoder-7B-cpGRPO",
@@ -86,7 +162,23 @@
         "path_env": "ARCHER_DIFFUCODER_MODEL_PATH"
       },
       "args": [
-        "--dataset", "humaneval", "--variants", "saber", "archer",
+        "--dataset", "humaneval", "--variants", "saber",
+        "--skip-warmup", "--continue-on-error",
+        "--gen-length", "256", "--block-length", "256",
+        "--temperature", "0", "--n", "2", "--mu", "2"
+      ]
+    },
+    {
+      "id": "table2_diffucoder_humaneval_archer",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "apple/DiffuCoder-7B-cpGRPO",
+        "revision": "98bc42bfd871eeec92fd0a8439ab34f75b405204",
+        "path_env": "ARCHER_DIFFUCODER_MODEL_PATH"
+      },
+      "args": [
+        "--dataset", "humaneval", "--variants", "archer",
+        "--skip-warmup", "--continue-on-error",
         "--refresh-radius", "15",
         "--gen-length", "256", "--block-length", "256",
         "--temperature", "0", "--n", "2", "--mu", "2"

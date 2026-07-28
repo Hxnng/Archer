@@ -59,16 +59,35 @@ class ExperimentConfigTests(unittest.TestCase):
     def test_table2_backbone_radii(self):
         runs = {run["id"]: run for run in load("table2_backbones.json")["runs"]}
         expected = {
-            "table2_llada_mbpp_k11": "11",
-            "table2_llada_humaneval_k15": "15",
-            "table2_dream_mbpp_k17": "17",
-            "table2_dream_humaneval_k9": "9",
-            "table2_diffucoder_mbpp_k8": "8",
-            "table2_diffucoder_humaneval_k15": "15",
+            "table2_llada_mbpp_archer": "11",
+            "table2_llada_humaneval_archer": "15",
+            "table2_dream_mbpp_archer": "17",
+            "table2_dream_humaneval_archer": "9",
+            "table2_diffucoder_mbpp_archer": "8",
+            "table2_diffucoder_humaneval_archer": "15",
         }
-        self.assertEqual(set(runs), set(expected))
+        self.assertEqual(len(runs), 12)
         for run_id, radius in expected.items():
             self.assertEqual(argument_value(runs[run_id], "--refresh-radius"), radius)
+
+    def test_table2_runs_each_method_in_a_fresh_process(self):
+        runs = load("table2_backbones.json")["runs"]
+        for run in runs:
+            index = run["args"].index("--variants")
+            self.assertFalse(run["args"][index + 1].startswith("--"))
+            self.assertTrue(run["args"][index + 2].startswith("--"))
+
+    def test_table2_non_llada_runs_copy_server_timing_flags(self):
+        runs = load("table2_backbones.json")["runs"]
+        non_llada = [
+            run
+            for run in runs
+            if run["model"]["path_env"] != "ARCHER_LLADA_MODEL_PATH"
+        ]
+        self.assertEqual(len(non_llada), 8)
+        for run in non_llada:
+            self.assertIn("--skip-warmup", run["args"])
+            self.assertIn("--continue-on-error", run["args"])
 
     def test_tables3_and_4_are_fixed_to_k11(self):
         for name in (

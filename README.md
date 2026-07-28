@@ -12,14 +12,23 @@ Set up the exact environment, models, datasets, and evaluators:
 ./setup.sh
 ```
 
-Reproduce the main experiment:
+Reproduce Tables 1–4:
 
 ```bash
 ./reproduce.sh
 ```
 
-Results are saved to `outputs/paper/table1_main/`. The values reported in the
-paper are in `results/reference_results.json`.
+To reproduce one table:
+
+```bash
+./reproduce.sh table1
+./reproduce.sh table2
+./reproduce.sh table3
+./reproduce.sh table4
+```
+
+Results are saved under `outputs/paper/`. The values reported in the paper are
+in `results/reference_results.json`.
 
 Set `CUDA_VISIBLE_DEVICES` to select another GPU. Evaluation executes generated
 Python programs, so use an isolated environment without credentials.
