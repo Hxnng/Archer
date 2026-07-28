@@ -80,6 +80,7 @@
       "args": [
         "--dataset", "livecodebench",
         "--variants", "llada", "fast_dllm", "fast_dllm_saber", "saber", "archer",
+        "--skip-warmup",
         "--refresh-radius", "10",
         "--fast-dllm-saber-factor", "1",
         "--gen-length", "256", "--block-length", "256",
@@ -96,6 +97,7 @@
       },
       "args": [
         "--dataset", "livecodebench", "--variants", "dkv_cache_decode",
+        "--skip-warmup",
         "--dkv-cache-reloading-step", "8",
         "--gen-length", "256", "--block-length", "256",
         "--temperature", "0", "--n", "2", "--mu", "2"
@@ -111,6 +113,7 @@
       },
       "args": [
         "--dataset", "livecodebench", "--variants", "dkv_cache_greedy",
+        "--skip-warmup",
         "--dkv-cache-greedy-reloading-step", "2",
         "--dkv-cache-greedy-window-size", "4",
         "--dkv-cache-greedy-seed", "42",
@@ -128,6 +131,7 @@
       },
       "args": [
         "--dataset", "livecodebench", "--variants", "dllm_cache",
+        "--skip-warmup",
         "--dllm-cache-prompt-interval", "100",
         "--dllm-cache-response-interval", "5",
         "--dllm-cache-transfer-ratio", "0.25",

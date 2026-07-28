@@ -85,6 +85,15 @@ class ExperimentConfigTests(unittest.TestCase):
         for run in infinity:
             self.assertEqual(argument_value(run, "--refresh-radius"), "257")
 
+    def test_livecodebench_reproduces_server_timing_setup(self):
+        runs = load("table1_main.json")["runs"]
+        livecodebench = [
+            run for run in runs if argument_value(run, "--dataset") == "livecodebench"
+        ]
+        self.assertEqual(len(livecodebench), 4)
+        for run in livecodebench:
+            self.assertIn("--skip-warmup", run["args"])
+
     def test_runner_can_render_every_config_without_models(self):
         for path in sorted(CONFIG_ROOT.glob("*.json")):
             with self.subTest(path=path.name):

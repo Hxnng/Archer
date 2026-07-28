@@ -13,6 +13,7 @@ DATASET_REPOSITORY = "livecodebench/code_generation_lite"
 DATASET_RELEASE = "release_v1"
 DATASET_REVISION = "a16d03780493b939b3601fb9da2ac3ed2b23caa2"
 EXPECTED_PROBLEMS = 400
+EXPECTED_SHA256 = "6ae6f79b27ea7274e76b88b53937bb32987f6725885426688948125182afdeba"
 REQUIRED_FIELDS = {
     "question_title",
     "question_content",
@@ -74,6 +75,13 @@ def main() -> None:
         lines=True,
         force_ascii=False,
     )
+    actual_sha256 = sha256(temporary_path)
+    if actual_sha256 != EXPECTED_SHA256:
+        temporary_path.unlink()
+        raise RuntimeError(
+            "LiveCodeBench snapshot hash differs from the paper run: "
+            f"expected {EXPECTED_SHA256}, got {actual_sha256}"
+        )
     temporary_path.replace(output_path)
 
     metadata = {
@@ -81,12 +89,9 @@ def main() -> None:
         "dataset_release": DATASET_RELEASE,
         "dataset_revision": DATASET_REVISION,
         "problems": len(dataset),
-        "sha256": sha256(output_path),
+        "sha256": actual_sha256,
         "saber_source_revision": "a5433184cd627d9a0e31f26981736eca72802e47",
-        "alignment_note": (
-            "Saber reports 400 zero-shot LiveCodeBench code-generation problems; "
-            "its repository does not publish the original test.jsonl hash."
-        ),
+        "alignment_note": "Byte-identical to the snapshot used for the paper run.",
     }
     (output_dir / "snapshot.json").write_text(
         json.dumps(metadata, indent=2, sort_keys=True) + "\n",
