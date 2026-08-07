@@ -51,6 +51,15 @@ def parse_args() -> argparse.Namespace:
         default=REPO_ROOT / "outputs" / "paper",
     )
     parser.add_argument("--limit", type=int, default=0)
+    parser.add_argument(
+        "--refresh-radius",
+        type=int,
+        default=None,
+        help=(
+            "Override --refresh-radius for selected Archer runs. The default "
+            "uses the paper value stored in the configuration."
+        ),
+    )
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     return parser.parse_args()
@@ -140,12 +149,25 @@ def build_command(
     output_dir: Path,
     limit: int,
     resume: bool,
+    refresh_radius: int | None,
 ) -> list[str]:
+    run_args = list(run["args"])
+    if refresh_radius is not None:
+        try:
+            radius_index = run_args.index("--refresh-radius") + 1
+        except ValueError as exc:
+            raise SystemExit(
+                f"{run['id']}: this run does not expose --refresh-radius"
+            ) from exc
+        run_args[radius_index] = str(refresh_radius)
+    run_name = run["id"]
+    if refresh_radius is not None:
+        run_name = f"{run_name}_k{refresh_radius}"
     command = [
         sys.executable,
         "-m",
         run["module"],
-        *run["args"],
+        *run_args,
         "--model-path",
         str(model_path),
         "--model-revision",
@@ -155,7 +177,7 @@ def build_command(
         "--output-dir",
         str(output_dir),
         "--run-name",
-        run["id"],
+        run_name,
     ]
     if run["module"] == "archer.benchmark":
         command.extend(["--model-repository", run["model"]["repository"]])
@@ -170,6 +192,8 @@ def main() -> None:
     args = parse_args()
     if args.limit < 0:
         raise SystemExit("--limit must be non-negative")
+    if args.refresh_radius is not None and args.refresh_radius < 0:
+        raise SystemExit("--refresh-radius must be non-negative")
     config_path = args.config.expanduser().resolve()
     config = load_config(config_path)
     overrides = parse_model_overrides(args.model_path)
@@ -197,6 +221,7 @@ def main() -> None:
             output_dir=output_dir,
             limit=args.limit,
             resume=args.resume,
+            refresh_radius=args.refresh_radius,
         )
         print(f"[{run['id']}] {shlex.join(command)}", flush=True)
         executed += 1

@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "paper_target": "Table 1: Archer results",
+  "default_refresh_radii": {
+    "mbpp": 11,
+    "livecodebench": 10,
+    "humaneval": 8
+  },
+  "runs": [
+    {
+      "id": "table1_archer_mbpp",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": [
+        "--dataset", "mbpp",
+        "--variants", "archer",
+        "--refresh-radius", "11",
+        "--gen-length", "256", "--block-length", "256",
+        "--temperature", "0", "--n", "2", "--mu", "2"
+      ]
+    },
+    {
+      "id": "table1_archer_livecodebench",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": [
+        "--dataset", "livecodebench",
+        "--variants", "archer",
+        "--skip-warmup",
+        "--refresh-radius", "10",
+        "--gen-length", "256", "--block-length", "256",
+        "--temperature", "0", "--n", "2", "--mu", "2"
+      ]
+    },
+    {
+      "id": "table1_archer_humaneval",
+      "module": "archer.benchmark",
+      "model": {
+        "repository": "GSAI-ML/LLaDA-8B-Instruct",
+        "revision": "6059b30c9531767ce47e0ca6a8161a6bb0c67693",
+        "path_env": "ARCHER_LLADA_MODEL_PATH"
+      },
+      "args": [
+        "--dataset", "humaneval",
+        "--variants", "archer",
+        "--refresh-radius", "8",
+        "--gen-length", "256", "--block-length", "256",
+        "--temperature", "0", "--n", "2", "--mu", "2"
+      ]
+    }
+  ]
+}

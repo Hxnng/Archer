@@ -29,19 +29,30 @@ ensure_repo() {
 
 mkdir -p "${ROOT}/baseline"
 
+TARGET="${1:-all}"
+case "${TARGET}" in
+  all|livecodebench) ;;
+  *)
+    echo "Usage: scripts/setup_external_repos.sh [all|livecodebench]" >&2
+    exit 2
+    ;;
+esac
+
 ensure_repo \
   "LiveCodeBench" \
   "https://github.com/LiveCodeBench/LiveCodeBench.git" \
   "28fef95ea8c9f7a547c8329f2cd3d32b92c1fa24"
 
-ensure_repo \
-  "dKV-Cache" \
-  "https://github.com/horseee/dKV-Cache.git" \
-  "49a76fcc43b744ec2d960137f216e419317138b1"
+if [[ "${TARGET}" == "all" ]]; then
+  ensure_repo \
+    "dKV-Cache" \
+    "https://github.com/horseee/dKV-Cache.git" \
+    "49a76fcc43b744ec2d960137f216e419317138b1"
 
-ensure_repo \
-  "dLLM-cache" \
-  "https://github.com/maomaocun/dLLM-cache.git" \
-  "17235bffc8c5b587a2dc6f7dc76fcd01eab76e3a"
+  ensure_repo \
+    "dLLM-cache" \
+    "https://github.com/maomaocun/dLLM-cache.git" \
+    "17235bffc8c5b587a2dc6f7dc76fcd01eab76e3a"
+fi
 
 echo "External repositories are ready under ${ROOT}/baseline."

@@ -1,10 +1,14 @@
 # Experiment configurations
 
-The JSON files contain the exact immutable settings used by `reproduce.sh`.
-They are validated before execution and should not require manual editing.
+`table1_archer.json` contains the three Archer runs reported in Table 1. The
+default refresh radii are MBPP $K=11$, LiveCodeBench $K=10$, and HumanEval
+$K=8$. `reproduce.sh` uses these values unless `--k` is supplied.
+
+The remaining JSON files preserve the broader paper experiments. They are
+versioned for provenance but are not required for the default reproduction.
 
 To inspect the commands without loading a model:
 
 ```bash
-uv run python scripts/run_experiment.py configs/table1_main.json --dry-run
+./reproduce.sh --dry-run
 ```

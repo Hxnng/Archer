@@ -56,6 +56,43 @@ class ExperimentConfigTests(unittest.TestCase):
         for run_id, radius in expected.items():
             self.assertEqual(argument_value(runs[run_id], "--refresh-radius"), radius)
 
+    def test_default_reproduction_contains_only_table1_archer_runs(self):
+        config = load("table1_archer.json")
+        runs = {run["id"]: run for run in config["runs"]}
+        expected = {
+            "table1_archer_mbpp": ("mbpp", "11"),
+            "table1_archer_livecodebench": ("livecodebench", "10"),
+            "table1_archer_humaneval": ("humaneval", "8"),
+        }
+        self.assertEqual(set(runs), set(expected))
+        for run_id, (dataset, radius) in expected.items():
+            run = runs[run_id]
+            self.assertEqual(argument_value(run, "--dataset"), dataset)
+            self.assertEqual(argument_value(run, "--refresh-radius"), radius)
+            variants_index = run["args"].index("--variants")
+            self.assertEqual(run["args"][variants_index + 1], "archer")
+            self.assertTrue(run["args"][variants_index + 2].startswith("--"))
+
+    def test_refresh_radius_override_is_isolated_in_run_name(self):
+        completed = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts" / "run_experiment.py"),
+                str(CONFIG_ROOT / "table1_archer.json"),
+                "--run",
+                "table1_archer_mbpp",
+                "--refresh-radius",
+                "16",
+                "--dry-run",
+            ],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+        self.assertIn("--refresh-radius 16", completed.stdout)
+        self.assertIn("--run-name table1_archer_mbpp_k16", completed.stdout)
+
     def test_table2_backbone_radii(self):
         runs = {run["id"]: run for run in load("table2_backbones.json")["runs"]}
         expected = {
