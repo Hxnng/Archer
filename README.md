@@ -3,6 +3,12 @@
 ### Adaptive Reuse of Cached Hidden States for Efficient Rollback in Diffusion Language Models
 
 <p align="center">
+  <a href="https://arxiv.org/abs/2608.08086"><strong>Paper</strong></a>
+  &nbsp;|&nbsp;
+  <a href="https://arxiv.org/pdf/2608.08086"><strong>PDF</strong></a>
+</p>
+
+<p align="center">
   <img src="assets/figure1.png" width="100%" alt="Archer reuses prompt key-value states while recomputing the revisable response." />
 </p>
 
@@ -12,24 +18,6 @@ the response states that remain subject to revision, and refreshes the prompt
 cache when the response moves sufficiently far from its cached anchor. This
 repository provides the minimal path needed to reproduce the **Archer rows in
 Table 1**.
-
-## Table 1 targets
-
-The released configuration uses LLaDA-8B-Instruct and the exact model revision
-from the paper. `Base` and `ET` are Pass@1 (%) on the original and Extended
-Test Cases versions of each benchmark; time is mean generation time per
-problem on one NVIDIA A100 40 GB.
-
-| Benchmark | Base | ET | Time (s) | Default $K$ |
-|---|---:|---:|---:|---:|
-| MBPP | 44.50 | 32.55 | 6.20 | 11 |
-| LiveCodeBench | 10.00 | — | 9.81 | 10 |
-| HumanEval | 43.29 | 37.80 | 8.07 | 8 |
-
-The reference values are also stored in
-[`results/reference_results.json`](results/reference_results.json). Wall-clock
-time is hardware-sensitive; accuracy should be evaluated with the versioned
-benchmark snapshots and evaluators in this repository.
 
 ## Quick start
 
@@ -118,18 +106,6 @@ CUDA_VISIBLE_DEVICES=0 ./reproduce.sh mbpp --limit 2
 
 Interrupted runs resume by default. Add `--no-resume` to request a fresh run.
 
-## Reproduction configuration
-
-| Item | Value |
-|---|---|
-| Model | `GSAI-ML/LLaDA-8B-Instruct` |
-| Revision | `6059b30c9531767ce47e0ca6a8161a6bb0c67693` |
-| Generation / block length | 256 / 256 |
-| Temperature | 0 |
-| Batch size | 1 |
-| Rollback parameters | $n=2$, $\mu=2$ |
-| Evaluation | bundled MBPP/HumanEval evaluators; pinned LiveCodeBench evaluator |
-
 Every run records its arguments, model revision, GPU, per-problem generations,
 timing, and aggregate evaluation. Outputs are written below:
 
@@ -157,3 +133,16 @@ results/reference_results.json  # paper reference values
 
 Evaluation executes model-generated Python programs. Run the artifact in an
 isolated environment without credentials or access to sensitive files.
+
+## Citation
+
+If Archer is useful for your research, please cite our paper:
+
+```bibtex
+@article{he2026archer,
+  title   = {Archer: Adaptive Reuse of Cached Hidden States for Efficient Rollback in Diffusion Language Models},
+  author  = {He, Xuning and Sheng, Zinan and Tao, Yongding and Liu, Huanyu and Li, Ge and Jiang, Xue and Dong, Yihong},
+  journal = {arXiv preprint arXiv:2608.08086},
+  year    = {2026}
+}
+```
