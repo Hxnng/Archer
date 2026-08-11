@@ -2,37 +2,13 @@
 
 from __future__ import annotations
 
-from types import SimpleNamespace
-
 import torch
 
 
 def _forward_with_kv(model, input_ids: torch.Tensor, past_key_values=None):
-    """Run a cache-capable forward pass under the project's KV interface.
-
-    Most DLM implementations, including the vendored LLaDA model, expose a
-    conventional ``(logits, past_key_values)`` API.  Dream-v0 instead mutates
-    HuggingFace's :class:`DynamicCache` internally but drops that cache from
-    its public ``MaskedLMOutput``.  This adapter restores the same observable
-    contract without changing either model implementation.
-    """
-    if getattr(getattr(model, "config", None), "model_type", None) != "Dream":
-        return model(
-            input_ids, past_key_values=past_key_values, use_cache=True
-        )
-
-    from transformers.cache_utils import DynamicCache
-
-    cache = DynamicCache()
-    if past_key_values is not None:
-        cache.key_cache = [key for key, _ in past_key_values]
-        cache.value_cache = [value for _, value in past_key_values]
-    outputs = model.model(
-        input_ids=input_ids, past_key_values=cache, use_cache=True
-    )
-    return SimpleNamespace(
-        logits=model.lm_head(outputs.last_hidden_state),
-        past_key_values=list(zip(cache.key_cache, cache.value_cache)),
+    """Run a cache-capable LLaDA forward pass."""
+    return model(
+        input_ids, past_key_values=past_key_values, use_cache=True
     )
 
 

@@ -26,8 +26,6 @@ dev = [
 
 [project.scripts]
 archer-reproduce = "archer.benchmark:main"
-archer-feedback-probe = "archer.feedback_experiment:main"
-archer-cache-validity = "archer.cache_validity_experiment:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

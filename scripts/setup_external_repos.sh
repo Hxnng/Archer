@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Clone and pin the external implementations used by the unified benchmark.
-# These checkouts are local dependencies and are intentionally git-ignored.
+# Clone and pin the official LiveCodeBench evaluator.
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
@@ -29,30 +28,14 @@ ensure_repo() {
 
 mkdir -p "${ROOT}/baseline"
 
-TARGET="${1:-all}"
-case "${TARGET}" in
-  all|livecodebench) ;;
-  *)
-    echo "Usage: scripts/setup_external_repos.sh [all|livecodebench]" >&2
-    exit 2
-    ;;
-esac
+if [[ "$#" -gt 1 || ( "$#" -eq 1 && "$1" != "livecodebench" ) ]]; then
+  echo "Usage: scripts/setup_external_repos.sh [livecodebench]" >&2
+  exit 2
+fi
 
 ensure_repo \
   "LiveCodeBench" \
   "https://github.com/LiveCodeBench/LiveCodeBench.git" \
   "28fef95ea8c9f7a547c8329f2cd3d32b92c1fa24"
 
-if [[ "${TARGET}" == "all" ]]; then
-  ensure_repo \
-    "dKV-Cache" \
-    "https://github.com/horseee/dKV-Cache.git" \
-    "49a76fcc43b744ec2d960137f216e419317138b1"
-
-  ensure_repo \
-    "dLLM-cache" \
-    "https://github.com/maomaocun/dLLM-cache.git" \
-    "17235bffc8c5b587a2dc6f7dc76fcd01eab76e3a"
-fi
-
-echo "External repositories are ready under ${ROOT}/baseline."
+echo "LiveCodeBench is ready under ${ROOT}/baseline."

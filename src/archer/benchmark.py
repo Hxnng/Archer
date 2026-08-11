@@ -1,4 +1,4 @@
-"""Run unified DLM baselines on HumanEval, MBPP, and LiveCodeBench.
+"""Run Archer on HumanEval, MBPP, and LiveCodeBench.
 
 ARCHER is the prompt-prefix cache controller defined by an anchor-relative
 Hamming-distance refresh radius. The runner writes one JSONL file per
@@ -24,15 +24,9 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Tuple
 
 from . import SABER_SOURCE_REVISION
-from .fast_dllm_v1 import FAST_DLLM_V1_SOURCE_REVISION
-from .fast_dllm_saber import SABER_FAST_DLLM_SOURCE_REVISION
-from .dkv_cache import DKV_CACHE_SOURCE_REVISION
-from .dllm_cache import DLLM_CACHE_SOURCE_REVISION
-
-
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MODEL_REPOSITORY = "GSAI-ML/LLaDA-8B-Instruct"
-MODEL_REVISION = "6059b30"
+MODEL_REVISION = "6059b30c9531767ce47e0ca6a8161a6bb0c67693"
 LIVECODEBENCH_SOURCE_REVISION = "28fef95ea8c9f7a547c8329f2cd3d32b92c1fa24"
 LIVECODEBENCH_DATASET_REVISION = "a16d03780493b939b3601fb9da2ac3ed2b23caa2"
 PAPER_CONFIG = {
@@ -42,46 +36,18 @@ PAPER_CONFIG = {
     "temperature": 0.0,
     "n": 2,
 }
-VARIANTS = (
-    "llada",
-    "fast_dllm",
-    "fast_dllm_v1",
-    "fast_dllm_saber",
-    "dkv_cache_decode",
-    "dkv_cache_greedy",
-    "dllm_cache",
-    "saber",
-    "archer",
-)
-WORK_METRICS = {
-    "llada": "nfe",
-    "fast_dllm": "nfe",
-    "fast_dllm_v1": "nfe",
-    "fast_dllm_saber": "nfe",
-    "dkv_cache_decode": "nfe",
-    "dkv_cache_greedy": "nfe",
-    "dllm_cache": "nfe",
-    "saber": "nfe",
-    "archer": "nfe",
-}
+WORK_METRICS = {"archer": "nfe"}
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Evaluate DLM decoding and cache methods under one protocol."
+        description="Evaluate Archer under the paper's unified protocol."
     )
     parser.add_argument(
         "--dataset",
         choices=("humaneval", "mbpp", "livecodebench", "all"),
         default="all",
         help="Benchmark to run. Use separate run names when launching datasets in parallel.",
-    )
-    parser.add_argument(
-        "--variants",
-        nargs="+",
-        choices=VARIANTS,
-        default=("saber", "archer"),
-        help="Methods to run; default: saber archer.",
     )
     parser.add_argument(
         "--model-path",
@@ -121,7 +87,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--limit", type=int, default=0, help="Use the first N problems only (smoke test).")
     parser.add_argument("--resume", action="store_true", help="Continue from existing JSONL output in this run directory.")
     parser.add_argument("--continue-on-error", action="store_true", help="Record failed examples instead of stopping. Not suitable for a final reproduction.")
-    parser.add_argument("--skip-warmup", action="store_true", help="Do not warm up each variant once before timing.")
+    parser.add_argument("--skip-warmup", action="store_true", help="Do not warm up Archer once before timing.")
     parser.add_argument(
         "--mbpp-eval-workers",
         type=int,
@@ -158,88 +124,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--temperature", type=float, default=PAPER_CONFIG["temperature"])
     parser.add_argument("--n", type=int, default=PAPER_CONFIG["n"])
     parser.add_argument(
-        "--fast-dllm-block-length",
-        type=int,
-        default=32,
-        help="Fast-dLLM v1 cache block length (paper default: 32).",
-    )
-    parser.add_argument(
-        "--fast-dllm-threshold",
-        type=float,
-        default=0.9,
-        help="Fast-dLLM v1 parallel-decoding confidence threshold (paper default: 0.9).",
-    )
-    parser.add_argument(
-        "--fast-dllm-saber-factor",
-        type=float,
-        default=1.0,
-        help="Factor for the DualCache Fast-dLLM baseline used by Saber (default: 1).",
-    )
-    parser.add_argument(
-        "--dkv-cache-repo",
-        type=Path,
-        default=Path(
-            os.environ.get("DKV_CACHE_REPO", REPO_ROOT / "baseline" / "dKV-Cache")
-        ),
-        help="Pinned checkout of the official horseee/dKV-Cache repository.",
-    )
-    parser.add_argument(
-        "--dkv-cache-reloading-step",
-        type=int,
-        default=8,
-        help="dKV-Cache-Decode refresh interval (LLaDA paper default: 8).",
-    )
-    parser.add_argument(
-        "--dkv-cache-greedy-reloading-step",
-        type=int,
-        default=2,
-        help="dKV-Cache-Greedy refresh interval (LLaDA paper default: 2).",
-    )
-    parser.add_argument(
-        "--dkv-cache-greedy-window-size",
-        type=int,
-        default=4,
-        help="dKV-Cache-Greedy local cache window (LLaDA paper default: 4).",
-    )
-    parser.add_argument(
-        "--dkv-cache-greedy-seed",
-        type=int,
-        default=42,
-        help="Seed for the predefined random denoising order (default: 42).",
-    )
-    parser.add_argument(
-        "--dllm-cache-repo",
-        type=Path,
-        default=Path(
-            os.environ.get("DLLM_CACHE_REPO", REPO_ROOT / "baseline" / "dLLM-cache")
-        ),
-        help="Pinned checkout of the official maomaocun/dLLM-Cache repository.",
-    )
-    parser.add_argument(
-        "--dllm-cache-prompt-interval",
-        type=int,
-        default=None,
-        help="Prompt refresh interval; defaults to the paper's code-task setting.",
-    )
-    parser.add_argument(
-        "--dllm-cache-response-interval",
-        type=int,
-        default=5,
-        help="Response full-refresh interval (paper code-task setting: 5).",
-    )
-    parser.add_argument(
-        "--dllm-cache-transfer-ratio",
-        type=float,
-        default=0.25,
-        help="V-verify adaptive response update ratio (paper default: 0.25).",
-    )
-    parser.add_argument(
-        "--dllm-cache-block-length",
-        type=int,
-        default=32,
-        help="Semi-autoregressive block length used for code tasks in the paper.",
-    )
-    parser.add_argument(
         "--refresh-radius",
         type=int,
         default=5,
@@ -251,6 +135,7 @@ def parse_args() -> argparse.Namespace:
         help="Allow a parameter sweep instead of the canonical evaluation configuration.",
     )
     args = parser.parse_args()
+    args.variants = ("archer",)
 
     if not args.model_path:
         parser.error("--model-path (or ARCHER_MODEL_PATH) is required")
@@ -262,38 +147,6 @@ def parse_args() -> argparse.Namespace:
         parser.error("--gen-length must be a positive multiple of --block-length")
     if args.refresh_radius < 0:
         parser.error("--refresh-radius must be non-negative")
-    if args.fast_dllm_block_length <= 0 or args.gen_length % args.fast_dllm_block_length:
-        parser.error("--fast-dllm-block-length must be positive and divide --gen-length")
-    if not 0.0 <= args.fast_dllm_threshold <= 1.0:
-        parser.error("--fast-dllm-threshold must lie in [0, 1]")
-    if args.fast_dllm_saber_factor <= 0:
-        parser.error("--fast-dllm-saber-factor must be positive")
-    if args.dkv_cache_reloading_step <= 0:
-        parser.error("--dkv-cache-reloading-step must be positive")
-    if args.dkv_cache_greedy_reloading_step <= 0:
-        parser.error("--dkv-cache-greedy-reloading-step must be positive")
-    if args.dkv_cache_greedy_window_size < 0:
-        parser.error("--dkv-cache-greedy-window-size must be non-negative")
-    if {"dkv_cache_decode", "dkv_cache_greedy"}.intersection(args.variants) and len(args.variants) != 1:
-        parser.error(
-            "dKV-Cache variants use an official modified LLaDA model and must run "
-            "as the only variant in its process"
-        )
-    if "dllm_cache" in args.variants and len(args.variants) != 1:
-        parser.error(
-            "dllm_cache installs official model hooks and must run as the only "
-            "variant in its process"
-        )
-    if "dllm_cache" in args.variants and args.dataset == "all":
-        parser.error("run dllm_cache separately for each dataset")
-    if args.dllm_cache_prompt_interval is None:
-        args.dllm_cache_prompt_interval = 25 if args.dataset == "humaneval" else 100
-    if args.dllm_cache_prompt_interval <= 0 or args.dllm_cache_response_interval <= 0:
-        parser.error("dLLM-Cache refresh intervals must be positive")
-    if not 0.0 <= args.dllm_cache_transfer_ratio <= 1.0:
-        parser.error("--dllm-cache-transfer-ratio must lie in [0, 1]")
-    if args.dllm_cache_block_length <= 0 or args.gen_length % args.dllm_cache_block_length:
-        parser.error("--dllm-cache-block-length must be positive and divide --gen-length")
     if args.mbpp_eval_workers <= 0:
         parser.error("--mbpp-eval-workers must be positive")
     if args.livecodebench_eval_workers <= 0:
@@ -336,12 +189,11 @@ def load_runtime() -> Dict[str, Any]:
     try:
         import torch
         import tqdm
-        from transformers import AutoConfig, AutoModel, AutoTokenizer
+        from transformers import AutoTokenizer
         from ._vendor.evaluation.humaneval import (
             evaluate_solution,
             evaluate_solution_et,
         )
-        from ._vendor.evaluation.mbpp import evaluate_functional_correctness
         from ._vendor.llada import LLaDAModelLM
         from .datasets import (
             extract_humaneval_answer,
@@ -353,25 +205,6 @@ def load_runtime() -> Dict[str, Any]:
             load_mbpp,
             mbpp_doc_to_text,
         )
-        from .llada import generate_llada
-        from .fast_dllm_v1 import generate_fast_dllm_v1
-        from .fast_dllm_saber import (
-            generate_fast_dllm_cache_only,
-            generate_fast_dllm_saber,
-        )
-        from .dkv_cache import (
-            generate_dkv_cache_decode,
-            generate_dkv_cache_greedy,
-            load_dkv_cache_greedy_model,
-            load_dkv_cache_model,
-        )
-        from .dllm_cache import generate_dllm_cache, load_dllm_cache_model
-        from .dream import (
-            generate_dream_archer,
-            generate_dream_saber,
-            is_dream_family,
-        )
-        from .saber import generate_saber
         from .state_distance import (
             generate_archer,
             summarize_cache_diagnostics,
@@ -386,8 +219,6 @@ def load_runtime() -> Dict[str, Any]:
     return {
         "torch": torch,
         "tqdm": tqdm,
-        "AutoConfig": AutoConfig,
-        "AutoModel": AutoModel,
         "AutoTokenizer": AutoTokenizer,
         "LLaDAModelLM": LLaDAModelLM,
         "load_jsonl": load_jsonl,
@@ -400,21 +231,6 @@ def load_runtime() -> Dict[str, Any]:
         "extract_mbpp_answer": extract_mbpp_answer,
         "evaluate_solution": evaluate_solution,
         "evaluate_solution_et": evaluate_solution_et,
-        "evaluate_functional_correctness": evaluate_functional_correctness,
-        "generate_llada": generate_llada,
-        "generate_fast_dllm_v1": generate_fast_dllm_v1,
-        "generate_fast_dllm_cache_only": generate_fast_dllm_cache_only,
-        "generate_fast_dllm_saber": generate_fast_dllm_saber,
-        "generate_dkv_cache_decode": generate_dkv_cache_decode,
-        "generate_dkv_cache_greedy": generate_dkv_cache_greedy,
-        "load_dkv_cache_model": load_dkv_cache_model,
-        "load_dkv_cache_greedy_model": load_dkv_cache_greedy_model,
-        "generate_dllm_cache": generate_dllm_cache,
-        "load_dllm_cache_model": load_dllm_cache_model,
-        "generate_dream_saber": generate_dream_saber,
-        "generate_dream_archer": generate_dream_archer,
-        "is_dream_family": is_dream_family,
-        "generate_saber": generate_saber,
         "generate_archer": generate_archer,
         "summarize_cache_diagnostics": summarize_cache_diagnostics,
     }
@@ -498,85 +314,9 @@ def variant_call(
     input_ids: Any,
     args: argparse.Namespace,
     runtime: Dict[str, Any],
-    sample_index: int = 0,
 ) -> Tuple[Any, int, int, Dict[str, Any]]:
-    if variant == "llada":
-        tokens, steps = runtime["generate_llada"](
-            model,
-            input_ids,
-            steps=args.gen_length,
-            gen_length=args.gen_length,
-            block_length=args.block_length,
-            temperature=args.temperature,
-        )
-        return tokens, int(steps), int(steps), {}
-    if variant == "fast_dllm_v1":
-        tokens, nfe = runtime["generate_fast_dllm_v1"](
-            model,
-            input_ids,
-            gen_length=args.gen_length,
-            block_length=args.fast_dllm_block_length,
-            threshold=args.fast_dllm_threshold,
-        )
-        return tokens, int(nfe), int(nfe), {}
-    if variant == "fast_dllm":
-        tokens, nfe = runtime["generate_fast_dllm_cache_only"](
-            model,
-            input_ids,
-            steps=args.gen_length,
-            gen_length=args.gen_length,
-            block_length=args.block_length,
-            temperature=args.temperature,
-        )
-        return tokens, int(nfe), int(nfe), {}
-    if variant == "fast_dllm_saber":
-        tokens, nfe = runtime["generate_fast_dllm_saber"](
-            model,
-            input_ids,
-            steps=args.gen_length,
-            gen_length=args.gen_length,
-            block_length=args.block_length,
-            temperature=args.temperature,
-            factor=args.fast_dllm_saber_factor,
-        )
-        return tokens, int(nfe), int(nfe), {}
-    if variant == "dkv_cache_decode":
-        tokens, nfe = runtime["generate_dkv_cache_decode"](
-            model,
-            input_ids,
-            repo_path=args.dkv_cache_repo,
-            steps=args.gen_length,
-            gen_length=args.gen_length,
-            block_length=args.block_length,
-            temperature=args.temperature,
-            cache_reloading_step=args.dkv_cache_reloading_step,
-        )
-        return tokens, int(nfe), int(nfe), {}
-    if variant == "dkv_cache_greedy":
-        tokens, nfe = runtime["generate_dkv_cache_greedy"](
-            model,
-            input_ids,
-            repo_path=args.dkv_cache_repo,
-            steps=args.gen_length,
-            gen_length=args.gen_length,
-            block_length=args.block_length,
-            temperature=args.temperature,
-            cache_reloading_step=args.dkv_cache_greedy_reloading_step,
-            window_size=args.dkv_cache_greedy_window_size,
-            seed=args.dkv_cache_greedy_seed,
-        )
-        return tokens, int(nfe), int(nfe), {}
-    if variant == "dllm_cache":
-        tokens, nfe = runtime["generate_dllm_cache"](
-            model,
-            input_ids,
-            repo_path=args.dllm_cache_repo,
-            steps=args.gen_length,
-            gen_length=args.gen_length,
-            block_length=args.dllm_cache_block_length,
-            temperature=args.temperature,
-        )
-        return tokens, int(nfe), int(nfe), {}
+    if variant != "archer":
+        raise ValueError(f"unsupported variant: {variant}")
     common = {
         "n": args.n,
         "mu": args.mu,
@@ -585,35 +325,14 @@ def variant_call(
         "temperature": args.temperature,
     }
     mask_id = getattr(getattr(model, "config", None), "mask_token_id", 126336)
-    is_dream = runtime.get("is_dream_family", lambda _model: False)(model)
-    if variant == "saber":
-        generator = (
-            runtime["generate_dream_saber"]
-            if is_dream
-            else runtime["generate_saber"]
-        )
-        tokens, steps = generator(
-            model,
-            input_ids,
-            mask_id=mask_id,
-            **common,
-        )
-        return tokens, int(steps), int(steps), {}
-    if variant == "archer":
-        generator = (
-            runtime["generate_dream_archer"]
-            if is_dream
-            else runtime["generate_archer"]
-        )
-        tokens, steps, nfe, diagnostics = generator(
-            model,
-            input_ids,
-            mask_id=mask_id,
-            refresh_radius=args.refresh_radius,
-            **common,
-        )
-        return tokens, int(steps), int(nfe), dict(diagnostics)
-    raise ValueError(f"unsupported variant: {variant}")
+    tokens, steps, nfe, diagnostics = runtime["generate_archer"](
+        model,
+        input_ids,
+        mask_id=mask_id,
+        refresh_radius=args.refresh_radius,
+        **common,
+    )
+    return tokens, int(steps), int(nfe), dict(diagnostics)
 
 
 def evaluate_rows(
@@ -774,7 +493,7 @@ def run_dataset(
         docs = docs[: args.limit]
     if not docs:
         fail(f"{dataset_name} has no selected problems")
-    print(f"==> {dataset_name}: {len(docs)} problems | variants={list(args.variants)}", flush=True)
+    print(f"==> {dataset_name}: {len(docs)} problems | method=archer", flush=True)
 
     def prepare(doc: Dict[str, Any]) -> Tuple[Dict[str, Any], Any]:
         context, ground_truth, trailing = doc_to_text(doc)
@@ -785,7 +504,7 @@ def run_dataset(
         _, warmup_ids = prepare(docs[0])
         for variant in args.variants:
             print(f"==> warmup {dataset_name}:{variant}", flush=True)
-            variant_call(variant, model, warmup_ids, args, runtime, sample_index=-1)
+            variant_call(variant, model, warmup_ids, args, runtime)
         torch.cuda.synchronize()
 
     summaries: Dict[str, Dict[str, Any]] = {}
@@ -812,7 +531,7 @@ def run_dataset(
                 started = dt.datetime.now(dt.timezone.utc)
                 start_time = time.perf_counter()
                 generated_ids, steps, method_work, diagnostics = variant_call(
-                    variant, model, input_ids, args, runtime, sample_index=index
+                    variant, model, input_ids, args, runtime
                 )
                 torch.cuda.synchronize()
                 elapsed = time.perf_counter() - start_time
@@ -912,12 +631,9 @@ def run_dataset(
             "work_metric": WORK_METRICS[variant],
             "raw_completions": output_file.name,
         }
-        if variant.startswith("archer"):
-            summaries[variant]["cache_diagnostics"] = runtime[
-                "summarize_cache_diagnostics"
-            ](
-                [row.get("diagnostics", {}) for row in rows]
-            )
+        summaries[variant]["cache_diagnostics"] = runtime[
+            "summarize_cache_diagnostics"
+        ]([row.get("diagnostics", {}) for row in rows])
         if WORK_METRICS[variant] == "nfe":
             summaries[variant]["mean_nfe"] = mean_method_work
         et_text = "n/a" if pass_at_1_et is None else f"{pass_at_1_et:.4f}"
@@ -929,29 +645,16 @@ def run_dataset(
             flush=True,
         )
 
-    if "saber" in summaries:
-        for variant, summary in summaries.items():
-            if variant != "saber":
-                summary["speedup_vs_saber"] = (
-                    summaries["saber"]["mean_wall_time_s"]
-                    / summary["mean_wall_time_s"]
-                )
     return summaries
 
 
 def main() -> None:
     args = parse_args()
     args.benchmark_root = args.benchmark_root.resolve()
-    args.dkv_cache_repo = args.dkv_cache_repo.expanduser().resolve()
-    args.dllm_cache_repo = args.dllm_cache_repo.expanduser().resolve()
     args.livecodebench_repo = args.livecodebench_repo.expanduser().resolve()
     model_path = Path(args.model_path).expanduser().resolve()
     require_path(args.benchmark_root, "benchmark directory")
     require_path(model_path, "model directory")
-    if {"dkv_cache_decode", "dkv_cache_greedy"}.intersection(args.variants):
-        require_path(args.dkv_cache_repo, "official dKV-Cache checkout")
-    if "dllm_cache" in args.variants:
-        require_path(args.dllm_cache_repo, "official dLLM-Cache checkout")
     if "livecodebench" in datasets_to_run(args.dataset):
         require_path(args.livecodebench_repo, "official LiveCodeBench checkout")
         actual_lcb_revision = git_revision(args.livecodebench_repo)
@@ -971,9 +674,6 @@ def main() -> None:
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     runtime = load_runtime()
     torch = runtime["torch"]
-    model_config = runtime["AutoConfig"].from_pretrained(
-        model_path, trust_remote_code=True
-    )
     manifest = {
         "created_at_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
         "paper_config": PAPER_CONFIG,
@@ -987,23 +687,10 @@ def main() -> None:
             "temperature": args.temperature,
             "n": args.n,
             "refresh_radius": args.refresh_radius,
-            "fast_dllm_block_length": args.fast_dllm_block_length,
-            "fast_dllm_threshold": args.fast_dllm_threshold,
-            "fast_dllm_saber_factor": args.fast_dllm_saber_factor,
-            "dkv_cache_repo": str(args.dkv_cache_repo),
-            "dkv_cache_reloading_step": args.dkv_cache_reloading_step,
-            "dkv_cache_greedy_reloading_step": args.dkv_cache_greedy_reloading_step,
-            "dkv_cache_greedy_window_size": args.dkv_cache_greedy_window_size,
-            "dkv_cache_greedy_seed": args.dkv_cache_greedy_seed,
-            "dllm_cache_repo": str(args.dllm_cache_repo),
-            "dllm_cache_prompt_interval": args.dllm_cache_prompt_interval,
-            "dllm_cache_response_interval": args.dllm_cache_response_interval,
-            "dllm_cache_transfer_ratio": args.dllm_cache_transfer_ratio,
-            "dllm_cache_block_length": args.dllm_cache_block_length,
             "model_path": str(model_path),
             "model_repository": args.model_repository,
             "model_revision": args.model_revision,
-            "model_type": getattr(model_config, "model_type", "unknown"),
+            "model_type": "llada",
             "benchmark_root": str(args.benchmark_root),
             "mbpp_eval_workers": args.mbpp_eval_workers,
             "livecodebench_repo": str(args.livecodebench_repo),
@@ -1018,10 +705,6 @@ def main() -> None:
             "torch_cuda": torch.version.cuda,
             "cuda_device": torch.cuda.get_device_name(0),
             "saber_source_revision": SABER_SOURCE_REVISION,
-            "fast_dllm_v1_source_revision": FAST_DLLM_V1_SOURCE_REVISION,
-            "saber_fast_dllm_source_revision": SABER_FAST_DLLM_SOURCE_REVISION,
-            "dkv_cache_source_revision": DKV_CACHE_SOURCE_REVISION,
-            "dllm_cache_source_revision": DLLM_CACHE_SOURCE_REVISION,
             "livecodebench_source_revision": git_revision(args.livecodebench_repo),
             "archer_git_revision": git_revision(REPO_ROOT),
         },
@@ -1040,34 +723,9 @@ def main() -> None:
         json_dump(manifest_path, manifest)
 
     print(f"==> loading model from {model_path}", flush=True)
-    if "dkv_cache_decode" in args.variants:
-        model = runtime["load_dkv_cache_model"](
-            args.dkv_cache_repo, model_path, torch
-        )
-    elif "dkv_cache_greedy" in args.variants:
-        model = runtime["load_dkv_cache_greedy_model"](
-            args.dkv_cache_repo, model_path, torch
-        )
-    elif "dllm_cache" in args.variants:
-        model = runtime["load_dllm_cache_model"](
-            args.dllm_cache_repo,
-            model_path,
-            torch,
-            prompt_interval_steps=args.dllm_cache_prompt_interval,
-            gen_interval_steps=args.dllm_cache_response_interval,
-            transfer_ratio=args.dllm_cache_transfer_ratio,
-        )
-    else:
-        if getattr(model_config, "model_type", None) == "llada":
-            model = runtime["LLaDAModelLM"].from_pretrained(
-                model_path, torch_dtype=torch.bfloat16
-            ).cuda().eval()
-        else:
-            model = runtime["AutoModel"].from_pretrained(
-                model_path,
-                trust_remote_code=True,
-                torch_dtype=torch.bfloat16,
-            ).cuda().eval()
+    model = runtime["LLaDAModelLM"].from_pretrained(
+        model_path, torch_dtype=torch.bfloat16
+    ).cuda().eval()
     tokenizer = runtime["AutoTokenizer"].from_pretrained(model_path, trust_remote_code=True)
 
     all_summaries: Dict[str, Dict[str, Any]] = {}

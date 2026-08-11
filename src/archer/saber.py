@@ -1,8 +1,8 @@
-"""Minimal Saber baseline used by the ARCHER main experiment.
+"""Saber transition and full-forward reference used by Archer.
 
 Extracted from ``zhaoyMa/Saber`` at revision
-``a5433184cd627d9a0e31f26981736eca72802e47``. Only the published Saber
-sampler and its Gumbel helper are retained.
+``a5433184cd627d9a0e31f26981736eca72802e47``. Archer calls the unmodified
+transition; the full-forward sampler is retained only for equivalence tests.
 """
 
 from __future__ import annotations

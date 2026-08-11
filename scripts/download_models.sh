@@ -17,33 +17,12 @@ download_model() {
     --local-dir "${destination}"
 }
 
-if [[ "$#" -eq 0 ]]; then
-  set -- llada
+if [[ "$#" -gt 1 || ( "$#" -eq 1 && "$1" != "llada" ) ]]; then
+  echo "Usage: scripts/download_models.sh [llada]" >&2
+  exit 2
 fi
 
-for model in "$@"; do
-  case "${model}" in
-    llada)
-      download_model \
-        "LLaDA-8B-Instruct" \
-        "GSAI-ML/LLaDA-8B-Instruct" \
-        "6059b30c9531767ce47e0ca6a8161a6bb0c67693"
-      ;;
-    dream)
-      download_model \
-        "Dream-v0-Instruct-7B" \
-        "Dream-org/Dream-v0-Instruct-7B" \
-        "05334cb9faaf763692dcf9d8737c642be2b2a6ae"
-      ;;
-    diffucoder)
-      download_model \
-        "DiffuCoder-7B-cpGRPO" \
-        "apple/DiffuCoder-7B-cpGRPO" \
-        "98bc42bfd871eeec92fd0a8439ab34f75b405204"
-      ;;
-    *)
-      echo "Unknown model '${model}'. Choose: llada dream diffucoder" >&2
-      exit 2
-      ;;
-  esac
-done
+download_model \
+  "LLaDA-8B-Instruct" \
+  "GSAI-ML/LLaDA-8B-Instruct" \
+  "6059b30c9531767ce47e0ca6a8161a6bb0c67693"

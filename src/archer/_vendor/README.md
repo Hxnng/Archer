@@ -12,6 +12,7 @@ These files are the minimal runtime subset of
   regular-expression literals use raw strings to avoid Python syntax warnings;
   their matching behavior is unchanged. Trailing whitespace was normalized.
 
-The Saber sampler needed as the experimental baseline is a small audited
-extraction in `archer/saber.py`. Benchmark data provenance is documented in
+The Saber transition used by Archer, together with a small full-forward
+reference implementation for regression testing, is audited in
+`archer/saber.py`. Benchmark data provenance is documented in
 `benchmarks/README.md`.

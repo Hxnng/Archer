@@ -126,9 +126,8 @@ configs/table1_archer.json       # Table 1 Archer defaults
 reproduce.sh                     # user-facing reproduction entry point
 scripts/run_experiment.py        # versioned config runner
 src/archer/state_distance/       # Archer cache controller and sampler
-src/archer/benchmark.py          # unified generation and evaluation pipeline
+src/archer/benchmark.py          # Archer generation and evaluation pipeline
 benchmarks/                      # versioned benchmark snapshots and checksums
-results/reference_results.json  # paper reference values
 ```
 
 Evaluation executes model-generated Python programs. Run the artifact in an
@@ -139,10 +138,13 @@ isolated environment without credentials or access to sensitive files.
 If Archer is useful for your research, please cite our paper:
 
 ```bibtex
-@article{he2026archer,
-  title   = {Archer: Adaptive Reuse of Cached Hidden States for Efficient Rollback in Diffusion Language Models},
-  author  = {He, Xuning and Sheng, Zinan and Tao, Yongding and Liu, Huanyu and Li, Ge and Jiang, Xue and Dong, Yihong},
-  journal = {arXiv preprint arXiv:2608.08086},
-  year    = {2026}
+@misc{he2026archer,
+  title         = {Archer: Adaptive Reuse of Cached Hidden States for Efficient Rollback in Diffusion Language Models},
+  author        = {Xuning He and Zinan Sheng and Yongding Tao and Huanyu Liu and Ge Li and Xue Jiang and Yihong Dong},
+  year          = {2026},
+  eprint        = {2608.08086},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+  url           = {https://arxiv.org/abs/2608.08086}
 }
 ```
