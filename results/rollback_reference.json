@@ -1,0 +1,12 @@
+{
+  "source": "Archer current single-column manuscript, Table 4: Rollback Activity",
+  "description": "Project-supplied manuscript reference values at a fixed refresh radius K=8, separate from Table 1's dataset-specific settings.",
+  "model": "LLaDA-8B-Instruct",
+  "refresh_radius": 8,
+  "metrics": {"revision_percent": "Percentage of response positions revised after their first non-mask prediction", "updates": "Mean number of response updates"},
+  "benchmarks": [
+    {"name": "MBPP", "methods": {"No-Rollback": {"revision_percent": 0.00, "updates": 65.97}, "Saber": {"revision_percent": 29.18, "updates": 146.98}, "Archer": {"revision_percent": 30.03, "updates": 147.51}}},
+    {"name": "LiveCodeBench", "methods": {"No-Rollback": {"revision_percent": 0.00, "updates": 74.73}, "Saber": {"revision_percent": 28.21, "updates": 158.83}, "Archer": {"revision_percent": 26.93, "updates": 163.25}}},
+    {"name": "HumanEval", "methods": {"No-Rollback": {"revision_percent": 0.00, "updates": 66.26}, "Saber": {"revision_percent": 27.87, "updates": 157.55}, "Archer": {"revision_percent": 30.24, "updates": 158.49}}}
+  ]
+}

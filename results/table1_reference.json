@@ -1,0 +1,18 @@
+{
+  "source": "https://arxiv.org/html/2608.08086v2#S6.T1",
+  "description": "Reported paper Table 1 values; reference data, not a new benchmark run.",
+  "model": "LLaDA-8B-Instruct",
+  "hardware": "One NVIDIA A100 40 GB",
+  "units": {"quality": "percent", "time": "seconds per problem", "speedup": "times relative to LLaDA-Confidence"},
+  "aggregation": {"quality": "Arithmetic mean of MBPP, MBPP-ET, LiveCodeBench, HumanEval, and HumanEval-ET Pass@1", "speedup": "Arithmetic mean of the three benchmark speedup ratios"},
+  "rows": [
+    {"method": "LLaDA-Confidence", "mbpp": 43.56, "mbpp_et": 30.44, "mbpp_time": 14.31, "livecodebench": 8.75, "livecodebench_time": 28.98, "humaneval": 43.29, "humaneval_et": 35.37, "humaneval_time": 19.86, "overall_performance": 32.28, "overall_speedup": 1.00},
+    {"method": "Fast-dLLM + Cache", "mbpp": 44.50, "mbpp_et": 31.62, "mbpp_time": 11.85, "livecodebench": 7.75, "livecodebench_time": 12.75, "humaneval": 41.46, "humaneval_et": 36.59, "humaneval_time": 11.95, "overall_performance": 32.38, "overall_speedup": 1.71},
+    {"method": "Fast-dLLM + Parallel", "mbpp": 40.05, "mbpp_et": 29.27, "mbpp_time": 3.40, "livecodebench": 8.25, "livecodebench_time": 4.85, "humaneval": 41.46, "humaneval_et": 36.59, "humaneval_time": 4.60, "overall_performance": 31.12, "overall_speedup": 4.84},
+    {"method": "dKV-Cache-Decode", "mbpp": 45.67, "mbpp_et": 32.32, "mbpp_time": 12.62, "livecodebench": 10.00, "livecodebench_time": 17.66, "humaneval": 42.07, "humaneval_et": 35.98, "humaneval_time": 14.54, "overall_performance": 33.21, "overall_speedup": 1.38},
+    {"method": "dKV-Cache-Greedy", "mbpp": 23.19, "mbpp_et": 18.27, "mbpp_time": 12.36, "livecodebench": 2.00, "livecodebench_time": 21.25, "humaneval": 15.24, "humaneval_et": 14.63, "humaneval_time": 15.82, "overall_performance": 14.67, "overall_speedup": 1.26},
+    {"method": "dLLM-Cache", "mbpp": 44.03, "mbpp_et": 32.32, "mbpp_time": 9.28, "livecodebench": 10.00, "livecodebench_time": 11.53, "humaneval": 40.24, "humaneval_et": 34.15, "humaneval_time": 10.16, "overall_performance": 32.15, "overall_speedup": 2.00},
+    {"method": "Saber", "mbpp": 44.03, "mbpp_et": 31.38, "mbpp_time": 8.45, "livecodebench": 7.25, "livecodebench_time": 17.75, "humaneval": 44.51, "humaneval_et": 37.20, "humaneval_time": 12.13, "overall_performance": 32.87, "overall_speedup": 1.65},
+    {"method": "Archer", "mbpp": 44.50, "mbpp_et": 32.55, "mbpp_time": 6.20, "livecodebench": 10.00, "livecodebench_time": 9.81, "humaneval": 43.29, "humaneval_et": 37.80, "humaneval_time": 8.07, "overall_performance": 33.63, "overall_speedup": 2.57}
+  ]
+}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title">
+<title id="title">Archer project preview</title>
+<g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif"><g transform="translate(68 52) scale(1.25)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M31 20 Q-6 64 31 108" stroke="#ff9a6b" stroke-width="9"/>
+      <path d="M31 20 L77 64 L31 108" stroke="#edf2f7" stroke-width="5"/>
+      <path d="M15 64 H105 M89 49 L105 64 L89 79" stroke="#ff9a6b" stroke-width="7"/>
+      <path d="M15 64 L5 54 M15 64 L5 74" stroke="#ff9a6b" stroke-width="5"/>
+    </g><text x="225" y="174" font-size="96" fill="#edf2f7" font-weight="700" letter-spacing="-5">Archer</text><text x="74" y="270" font-size="45" fill="#edf2f7" font-weight="650" >Efficient diffusion.</text><text x="74" y="326" font-size="45" fill="#edf2f7" font-weight="650" >Every token stays revisable.</text><text x="76" y="388" font-size="24" fill="#a5b2c2" font-weight="400" >Training-free KV caching for rollback-capable diffusion language models</text><text x="76" y="490" font-size="43" fill="#ff9a6b" font-weight="700" >Up to 4.33× speedup</text><text x="76" y="535" font-size="24" fill="#a5b2c2" font-weight="400" >Across code generation and reasoning benchmarks</text><text x="76" y="606" font-size="19" fill="#a5b2c2" font-weight="400" >github.com/Hxnng/Archer</text><text x="1204" y="606" font-size="17" fill="#a5b2c2" font-weight="400" text-anchor="end">Speedup vs. LLaDA-Confidence</text></g></svg>

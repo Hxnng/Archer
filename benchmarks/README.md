@@ -10,7 +10,7 @@ artifact:
 
 These snapshots and the minimal evaluation code under
 `src/archer/_vendor/evaluation/` were extracted from the pinned Saber source
-revision listed in the root README.
+revision listed in the [vendored dependency notes](../src/archer/_vendor/README.md).
 
 LiveCodeBench is not committed because of its size. Materialize the 400-task
 `release_v1` snapshot at its pinned dataset revision:

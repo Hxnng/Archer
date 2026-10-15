@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="220" viewBox="0 0 1000 220" role="img" aria-labelledby="title">
+<title id="title">Archer — Efficient diffusion. Every token stays revisable.</title>
+<g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif"><g transform="translate(250 8) scale(1.24)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M31 20 Q-6 64 31 108" stroke="#ff9a6b" stroke-width="9"/>
+      <path d="M31 20 L77 64 L31 108" stroke="#edf2f7" stroke-width="5"/>
+      <path d="M15 64 H105 M89 49 L105 64 L89 79" stroke="#ff9a6b" stroke-width="7"/>
+      <path d="M15 64 L5 54 M15 64 L5 74" stroke="#ff9a6b" stroke-width="5"/>
+    </g><text x="416" y="128" font-size="96" fill="#edf2f7" font-weight="700" letter-spacing="-5">Archer</text><text x="500" y="189" font-size="23" fill="#a5b2c2" font-weight="400" text-anchor="middle">Efficient diffusion. Every token stays revisable.</text></g></svg>

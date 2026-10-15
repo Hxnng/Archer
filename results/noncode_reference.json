@@ -1,0 +1,17 @@
+{
+  "source": "Archer current single-column manuscript, Table 5: Non-code evaluation, and Section 6.2: Generalization Beyond Code",
+  "description": "Project-supplied extended manuscript reference values; not a new benchmark run. These five-benchmark results are provided here separately from the main Table 1 reference.",
+  "reference_snapshot": "2026-10-15",
+  "model": "LLaDA-8B-Instruct",
+  "units": {"quality": "accuracy percent", "time": "seconds per example", "speedup": "times relative to LLaDA-Confidence"},
+  "aggregation": {"quality": "Macro-average across five benchmark accuracies", "speedup": "Arithmetic mean of the five reported per-benchmark speedups", "mmlu_pro": "Pooled Engineering (969) and Physics (1299): 2268 questions, weighted by question count"},
+  "scoring": {"math500": "Canonical answer normalization", "finqa": "Extracted numerical answer compared with gold exe_ans; numerical-answer accuracy", "pubmedqa": "Exact normalized yes/no/maybe label", "arc_challenge": "Multiple-choice answer accuracy", "mmlu_pro": "Multiple-choice answer accuracy; Engineering and Physics only"},
+  "benchmarks": [
+    {"id": "math500", "name": "MATH-500", "domain": "Mathematics", "refresh_radius": 16, "methods": {"LLaDA-Confidence": {"accuracy": 24.00, "time": 12.60, "speedup": 1.00}, "Saber": {"accuracy": 25.60, "time": 8.13, "speedup": 1.55}, "Archer": {"accuracy": 25.00, "time": 6.39, "speedup": 1.97}}},
+    {"id": "finqa", "name": "FinQA", "domain": "Finance", "refresh_radius": 16, "methods": {"LLaDA-Confidence": {"accuracy": 28.51, "time": 42.65, "speedup": 1.00}, "Saber": {"accuracy": 29.56, "time": 24.66, "speedup": 1.73}, "Archer": {"accuracy": 30.17, "time": 9.86, "speedup": 4.33}}},
+    {"id": "pubmedqa", "name": "PubMedQA", "domain": "Biomedicine", "refresh_radius": 4, "methods": {"LLaDA-Confidence": {"accuracy": 67.40, "time": 21.26, "speedup": 1.00}, "Saber": {"accuracy": 69.40, "time": 14.15, "speedup": 1.50}, "Archer": {"accuracy": 69.50, "time": 9.58, "speedup": 2.22}}},
+    {"id": "arc_challenge", "name": "ARC-Challenge", "domain": "Science", "refresh_radius": 16, "methods": {"LLaDA-Confidence": {"accuracy": 86.09, "time": 12.54, "speedup": 1.00}, "Saber": {"accuracy": 86.18, "time": 11.73, "speedup": 1.07}, "Archer": {"accuracy": 85.75, "time": 9.12, "speedup": 1.38}}},
+    {"id": "mmlu_pro", "name": "MMLU-Pro", "domain": "Engineering + Physics", "refresh_radius": 16, "methods": {"LLaDA-Confidence": {"accuracy": 30.60, "time": 18.46, "speedup": 1.00}, "Saber": {"accuracy": 30.42, "time": 12.21, "speedup": 1.51}, "Archer": {"accuracy": 31.44, "time": 7.58, "speedup": 2.43}}}
+  ],
+  "overall": {"LLaDA-Confidence": {"accuracy": 47.32, "speedup": 1.00}, "Saber": {"accuracy": 48.23, "speedup": 1.47}, "Archer": {"accuracy": 48.37, "speedup": 2.47}}
+}
